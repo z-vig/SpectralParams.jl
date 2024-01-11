@@ -1,5 +1,5 @@
 module SpectralParams
 
-println("Hello World!")
+include("RemoveContinuum.jl")
 
 end
