@@ -77,7 +77,13 @@ function convexhull_removal(image::Array{<:AbstractFloat,3},λ::Vector{Float64})
 
 end
 
-
+function doubleLine_removal(image::Array{<:AbstractFloat,3},λ::Vector{Float64})
+    """
+    Following method presented in Henderson et al., 2023
+    #First, a rough continuum is removed using fixed points at 700, 1550 adn 2600 nm
+    #Next, three points are chosen from the maxima of this spectrum at:
+    """
+end
 
 
 end #RemoveContinuum
