@@ -1,9 +1,7 @@
 #RemoveContinuum.jl
 module RemoveContinuum
 
-
-
-export convexhull_removal
+export convexhull_removal,doubleLine_removal
 
 """
 This module allows the user to remove the continuum using various methods.
@@ -18,6 +16,8 @@ All input images must be 3 dimensions, with the third dimension being spectral
 
 using LazySets
 using Interpolations
+using ..SpectralParams: findλ
+
 function convexhull_removal(image::Array{<:AbstractFloat,3},λ::Vector{Float64})
     #Make sure the image has dimension 3 as the spectral dimension
 
@@ -80,9 +80,29 @@ end
 function doubleLine_removal(image::Array{<:AbstractFloat,3},λ::Vector{Float64})
     """
     Following method presented in Henderson et al., 2023
-    #First, a rough continuum is removed using fixed points at 700, 1550 adn 2600 nm
-    #Next, three points are chosen from the maxima of this spectrum at:
+    First, a rough continuum is removed using fixed points at 700, 1550 and 2600 nm
+    Next, three points are chosen from the maxima of this spectrum at:
+     + 650 - 1000 nm
+     + 1350 - 1600 nm
+     + 2000 - 2600 nm
+    Finally, with these endpoints, the final continuum is calculated from the rfl values at these points on the original spectrum
     """
+    
+    #Getting initial continuum line
+    cont1_band_indices = [findλ(λ,i)[1] for i ∈ [700,1550,2600]]
+
+    cont1_bands = image[:,:,[22,108,213]]
+
+    function run_linearinterp(pt)
+        #Interpolating between convex hull points and applying to desired wavelengths
+        xs = hull_arr_x[pt...]
+        ys = hull_arr_y[pt...]
+        lin_interp = linear_interpolation(xs,ys,extrapolation_bc=Interpolations.Line())
+        return lin_interp.(λ)
+    end
+    
+    println(size(cont1_bands))
+
 end
 
 
