@@ -1,12 +1,16 @@
 module SpectralParams
 
-export RemoveContinuum,convexhull_removal,doubleLine_removal
 export SpecUtils,pullλ,findλ
+export RemoveContinuum,convexhull_removal,doubleLine_removal
+export IBD,IBD_map
+
+include("SpecUtils.jl")
+using .SpecUtils
 
 include("RemoveContinuum.jl")
 using .RemoveContinuum
 
-include("SpecUtils.jl")
-using .SpecUtils
+include("BandDepths/IBD.jl")
+using .IBD
 
 end
