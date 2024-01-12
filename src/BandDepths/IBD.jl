@@ -1,6 +1,6 @@
 #IBD.jl
 module IBD
-export IBD_map
+export IBD_map,band_area_ratio
 
 using ..SpectralParams: findλ
 
@@ -20,6 +20,10 @@ function IBD_map(image::Array{<:AbstractFloat,3},continuum::Array{<:AbstractFloa
 
     return IBDmap
 
+end
+
+function band_area_ratio(IBD1,IBD2)
+    return IBD1./IBD2
 end
 
 

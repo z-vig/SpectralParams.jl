@@ -5,6 +5,7 @@ using GLMakie
 using Colors
 using Statistics
 
+
 function get_data(str::String ; folder=false)
     #Function for getting data from Data folder in the package
     hmdir = joinpath(dirname(@__DIR__),"Data")
@@ -12,6 +13,12 @@ function get_data(str::String ; folder=false)
         hmdir = joinpath(hmdir,folder)
     end
     return joinpath(hmdir,str)
+end
+
+function save_hdf5(im::Array{<:AbstractFloat},name::String,folder::String)
+    h5file = h5open(get_data(name,folder=folder),"w")
+    h5file["gamma"] = im
+    close(h5file)
 end
 
 function clip_im(im::Array{<:AbstractFloat,2},minval::Float64,maxval::Float64)
@@ -41,11 +48,13 @@ lower_quantile = 0.05
 i1_min = 789
 i1_max = i1_min + 20*26
 ibd1000 = IBD_map(im,cont,λ,i1_min,i1_max)[:,:,1]
+save_hdf5(ibd1000,"gd_region_IBD1000.hdf5","IBD_maps")
 clip_im(ibd1000,quantile(vec(ibd1000),lower_quantile),quantile(vec(ibd1000),upper_quantile))
 
 i2_min = 1658
 i2_max = i2_min + 40*21
 ibd2000 = IBD_map(im,cont,λ,i2_min,i2_max)[:,:,1]
+save_hdf5(ibd2000,"gd_region_IBD2000.hdf5","IBD_maps")
 clip_im(ibd2000,quantile(vec(ibd2000),lower_quantile),quantile(vec(ibd2000),upper_quantile))
 
 albedo = im[:,:,findλ(λ,1580)[1]]
@@ -96,4 +105,4 @@ function plot()
     display(GLMakie.Screen(),fim)
 end
 
-plot()
+#plot()
