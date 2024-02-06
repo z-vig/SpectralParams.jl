@@ -48,13 +48,20 @@ lower_quantile = 0.05
 i1_min = 789
 i1_max = i1_min + 20*26
 ibd1000 = IBD_map(im,cont,λ,i1_min,i1_max)[:,:,1]
-save_hdf5(ibd1000,"gd_region_IBD1000.hdf5","IBD_maps")
-clip_im(ibd1000,quantile(vec(ibd1000),lower_quantile),quantile(vec(ibd1000),upper_quantile))
 
 i2_min = 1658
 i2_max = i2_min + 40*21
 ibd2000 = IBD_map(im,cont,λ,i2_min,i2_max)[:,:,1]
-save_hdf5(ibd2000,"gd_region_IBD2000.hdf5","IBD_maps")
+
+h5save = h5open("C:/Users/zvig/.julia/dev/JENVI.jl/Data/gamma_maps.hdf5","r+")
+h5save["IBD1000"] = ibd1000
+h5save["IBD2000"] = ibd2000
+close(h5save)
+
+#save_hdf5(ibd1000,"gd_region_IBD1000.hdf5","IBD_maps")
+clip_im(ibd1000,quantile(vec(ibd1000),lower_quantile),quantile(vec(ibd1000),upper_quantile))
+
+#save_hdf5(ibd2000,"gd_region_IBD2000.hdf5","IBD_maps")
 clip_im(ibd2000,quantile(vec(ibd2000),lower_quantile),quantile(vec(ibd2000),upper_quantile))
 
 albedo = im[:,:,findλ(λ,1580)[1]]
@@ -105,4 +112,4 @@ function plot()
     display(GLMakie.Screen(),fim)
 end
 
-#plot()
+plot()

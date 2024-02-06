@@ -26,8 +26,8 @@ println("Removing Convex Hull...")
 cv_removal = convexhull_removal(im,λ)
 
 println("Saving Results...")
-h5save = h5open(get_data("gd_region_cvh_removed.hdf5"),"w")
-h5save["gamma"] = cv_removal
+h5save = h5open("C:/Users//zvig//.julia/dev/JENVI.jl/Data/gamma_maps.hdf5","r+")
+h5save["HullRemoved"] = cv_removal
 close(h5save)
 
 f = Figure()

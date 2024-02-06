@@ -1,6 +1,6 @@
 #SpecUtils.jl
 module SpecUtils
-export pullλ,findλ,movingavg
+export pullλ,findλ,movingavg,make3d
 
 """
 Module for all of your various spectral needs
@@ -17,6 +17,10 @@ function findλ(wvls::Vector{Float64},targetλ::Real)
     located_ind = findall(diff_vec.==minimum(diff_vec))
     actualλ = wvls[located_ind]
     return located_ind[1],actualλ[1]
+end
+
+function make3d(im::Array{Vector{Float64},2})
+    return permutedims([im[I][k] for k=eachindex(im[1,1]),I=CartesianIndices(im)],(2,3,1))
 end
 
 function movingavg(input_image::Array{<:AbstractFloat,3},input_λvector::Vector{Float64},box_size::Int)

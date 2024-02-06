@@ -20,8 +20,8 @@ close(h5file)
 
 cont1_inds,cont1r,cont1,cont2_inds,wvls,cont2,cont2r = doubleLine_removal(im,λ)
 
-h5save = h5open(get_data("gd_region_2pcontinuum.hdf5"),"w")
-h5save["gamma"] = cont2
+h5save = h5open("C:/Users/zvig/.julia/dev/JENVI.jl/Data/gamma_maps.hdf5","r+")
+h5save["2pContinuum"] = cont2
 close(h5save)
 
 
